@@ -19,7 +19,7 @@ const defaultData = {
             name: 'Ankita Saklecha',
             subject: 'Science Teacher',
             description: 'Passionate educator focused on conceptual clarity and student growth. Known for personalized attention and innovative teaching methods.',
-            experience: '6+',
+            experience: '12+',
             image: 'assets/ankita.png'
         },
         {
