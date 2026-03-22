@@ -112,7 +112,7 @@ const defaultData = {
         contact_phone: "+91 8275200281",
         contact_email: "mom.brainybox@gmail.com",
         contact_address: "2nd floor, Msr Square complex, Queenstown Society, Udyog Nagar, outside, Chinchwad, Pimpri-Chinchwad, Maharashtra 411033",
-        contact_instagram: "@brainybox.classes",
+        contact_instagram: "@mom_brainybox",
         contact_facebook: "@BrainyBoxOfficial",
         location_link: "https://www.google.com/maps",
         result_percentage: "100",
@@ -123,16 +123,16 @@ const defaultData = {
 
 const DataManager = {
     localCache: null,
-    isDraftMode: function() {
+    isDraftMode: function () {
         if (typeof window !== 'undefined') {
             return window.location.pathname.includes('admin.html') || window.location.search.includes('preview=true');
         }
         return false;
     },
-    getKey: function() {
+    getKey: function () {
         return this.isDraftMode() ? DRAFT_KEY : LIVE_KEY;
     },
-    init: function() {
+    init: function () {
         // Ensure initial sync from localStorage for immediate visual rendering
         if (!this.localCache) {
             let dataStr = localStorage.getItem(LIVE_KEY);
@@ -150,14 +150,14 @@ const DataManager = {
             window.storage = firebase.storage();
             window.auth = firebase.auth();
             window.firebaseInitialized = true;
-            
+
             // Setup real-time listener for the data document in Firebase
             window.db.collection('appData').doc('brainybox_data').onSnapshot((doc) => {
                 if (doc.exists) {
                     this.localCache = this.deepMerge(JSON.parse(JSON.stringify(defaultData)), doc.data());
                     localStorage.setItem(LIVE_KEY, JSON.stringify(this.localCache));
                     window.dispatchEvent(new Event('brainyboxDataUpdated'));
-                    
+
                     if (typeof updateNotificationBadge !== 'undefined') {
                         updateNotificationBadge();
                     }
@@ -170,7 +170,7 @@ const DataManager = {
             });
         }
     },
-    saveToFirebase: function(data) {
+    saveToFirebase: function (data) {
         if (window.db) {
             // Firestore does not allow 'undefined' values.
             // JSON.parse(JSON.stringify(data)) automatically strips them out cleanly.
@@ -179,14 +179,14 @@ const DataManager = {
                 .catch(console.error);
         }
     },
-    publishDraft: function() {
+    publishDraft: function () {
         // In the Firebase paradigm live sync handles state, but keep function for compat
         return true;
     },
-    discardDraft: function() {
+    discardDraft: function () {
         return true;
     },
-    deepMerge: function(target, source) {
+    deepMerge: function (target, source) {
         if (!source) return target;
         for (const key of Object.keys(source)) {
             if (source[key] instanceof Object && key in target && !Array.isArray(source[key])) {
@@ -196,11 +196,11 @@ const DataManager = {
         Object.assign(target || {}, source);
         return target;
     },
-    getData: function() {
+    getData: function () {
         this.init();
         return this.localCache;
     },
-    saveData: function(data) {
+    saveData: function (data) {
         try {
             this.localCache = data;
             localStorage.setItem(this.getKey(), JSON.stringify(data));
@@ -210,64 +210,64 @@ const DataManager = {
             console.error("Storage Error:", e);
         }
     },
-    updateStudentsEnrolled: function(count) {
+    updateStudentsEnrolled: function (count) {
         let d = this.getData(); d.studentsEnrolled = count; this.saveData(d);
     },
     // GENERIC CRUD GENERATOR
-    _addEntity: function(key, entity) { let d=this.getData(); entity.id = key.charAt(0) + '_' + Date.now(); d[key].push(entity); this.saveData(d); },
-    _updateEntity: function(key, id, entity) {
-        let d=this.getData(); const idx=d[key].findIndex(x=>x.id===id);
-        if(idx>-1) { entity.id=id; d[key][idx]=entity; this.saveData(d); }
+    _addEntity: function (key, entity) { let d = this.getData(); entity.id = key.charAt(0) + '_' + Date.now(); d[key].push(entity); this.saveData(d); },
+    _updateEntity: function (key, id, entity) {
+        let d = this.getData(); const idx = d[key].findIndex(x => x.id === id);
+        if (idx > -1) { entity.id = id; d[key][idx] = entity; this.saveData(d); }
     },
-    _deleteEntity: function(key, id) { let d=this.getData(); d[key]=d[key].filter(x=>x.id!==id); this.saveData(d); },
+    _deleteEntity: function (key, id) { let d = this.getData(); d[key] = d[key].filter(x => x.id !== id); this.saveData(d); },
 
     // Existing Specifics
-    addTeacher: function(t) { this._addEntity('teachers', t); },
-    updateTeacher: function(id, t) { this._updateEntity('teachers', id, t); },
-    deleteTeacher: function(id) { this._deleteEntity('teachers', id); },
-    addProgram: function(p) { this._addEntity('programs', p); },
-    updateProgram: function(id, p) { this._updateEntity('programs', id, p); },
-    deleteProgram: function(id) { this._deleteEntity('programs', id); },
+    addTeacher: function (t) { this._addEntity('teachers', t); },
+    updateTeacher: function (id, t) { this._updateEntity('teachers', id, t); },
+    deleteTeacher: function (id) { this._deleteEntity('teachers', id); },
+    addProgram: function (p) { this._addEntity('programs', p); },
+    updateProgram: function (id, p) { this._updateEntity('programs', id, p); },
+    deleteProgram: function (id) { this._deleteEntity('programs', id); },
     // Gallery & Achievers & Reviews
-    addGalleryImage: function(img) { this._addEntity('gallery_images', img); },
-    deleteGalleryImage: function(id) { this._deleteEntity('gallery_images', id); },
-    addAchiever: function(ach) { this._addEntity('achievers', ach); },
-    deleteAchiever: function(id) { this._deleteEntity('achievers', id); },
-    addReview: function(r) { this._addEntity('reviews', r); },
-    deleteReview: function(id) { this._deleteEntity('reviews', id); },
-    addFaq: function(f) { this._addEntity('faqs', f); },
-    updateFaq: function(id, f) { this._updateEntity('faqs', id, f); },
-    deleteFaq: function(id) { this._deleteEntity('faqs', id); },
+    addGalleryImage: function (img) { this._addEntity('gallery_images', img); },
+    deleteGalleryImage: function (id) { this._deleteEntity('gallery_images', id); },
+    addAchiever: function (ach) { this._addEntity('achievers', ach); },
+    deleteAchiever: function (id) { this._deleteEntity('achievers', id); },
+    addReview: function (r) { this._addEntity('reviews', r); },
+    deleteReview: function (id) { this._deleteEntity('reviews', id); },
+    addFaq: function (f) { this._addEntity('faqs', f); },
+    updateFaq: function (id, f) { this._updateEntity('faqs', id, f); },
+    deleteFaq: function (id) { this._deleteEntity('faqs', id); },
 
     // Enrollment
-    addSubmission: function(s) { 
+    addSubmission: function (s) {
         let d = this.getData();
-        if(!d.enroll_submissions) d.enroll_submissions = [];
+        if (!d.enroll_submissions) d.enroll_submissions = [];
         s.id = 'e_' + Date.now();
         d.enroll_submissions.push(s);
         this.saveData(d);
     },
-    deleteSubmission: function(id) { 
+    deleteSubmission: function (id) {
         let d = this.getData();
-        if(d.enroll_submissions) {
+        if (d.enroll_submissions) {
             d.enroll_submissions = d.enroll_submissions.filter(x => x.id !== id);
             this.saveData(d);
         }
     },
-    
+
     // Settings & Content Updates
-    updateUISettings: function(settings) {
+    updateUISettings: function (settings) {
         let d = this.getData(); d.ui_settings = settings; this.saveData(d);
     },
-    updateEnrollSettings: function(settings) {
+    updateEnrollSettings: function (settings) {
         let d = this.getData(); d.enroll_settings = settings; this.saveData(d);
     },
-    updateContent: function(content) {
+    updateContent: function (content) {
         let d = this.getData(); d.content = content; this.saveData(d);
     }
 };
 
-window.addEventListener('storage', function(e) {
+window.addEventListener('storage', function (e) {
     if (e.key === DataManager.getKey()) {
         window.dispatchEvent(new Event('brainyboxDataUpdated'));
     }
