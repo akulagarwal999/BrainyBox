@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brainybox | Coaching Institute</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+</head>
+
+<body>
+
+  <!-- Cinematic Preloader -->
+  <div id="loader">
+    <div class="cinematic-bg"></div>
+    <div id="camera">
+      <div class="logo-container">
+        <div class="cubes-wrapper">
+          <div class="cube-3d pink-tint"></div>
+          <div class="cube-3d green-tint"></div>
+          <div class="cube-3d blue-tint"></div>
+          <div class="cube-3d orange-tint"></div>
+        </div>
+        <h1 class="loader-brand-text">BRAINYBOX</h1>
+      </div>
+    </div>
+    <div class="light-burst"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <img src="assets/logo.jpg" alt="Brainybox Logo"> Brainybox
+      </a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#courses">Courses</a></li>
+        <li><a href="#teachers">Faculty</a></li>
+        <li><a href="#achievers">Scholars</a></li>
+        <li><a href="#location">Location</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="#" class="join-btn open-enroll-modal">Enroll Now</a>
+      <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+    </div>
+  </nav>
+
+  <div id="main-content">
+
+    <!-- HERO SECTION -->
+    <section id="home" class="hero section-animate">
+      <div class="hero-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+      </div>
+      <div class="container hero-content">
+        <div class="hero-text">
+          <div class="badge" id="render-hero-badge">Admissions Open</div>
+          <h1 id="render-hero-title">Ignite Your Potential with <span class="highlight">Brainybox</span></h1>
+          <p id="render-hero-subtitle">Premium coaching for students.</p>
+          <div class="hero-buttons">
+            <a href="#" class="btn btn-primary open-enroll-modal">Join Us Today <i class="fas fa-arrow-right"></i></a>
+            <a href="#courses" class="btn btn-secondary">Explore Courses</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="hero-stats-card glass-card">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div>
+              <h3 class="counter" id="students-counter" data-target="0">0</h3>
+              <p>Enrolled Students</p>
+            </div>
+          </div>
+          <div class="hero-stats-card result-card glass-card">
+            <div class="stat-icon" id="floating-icon-container"><i class="fas fa-award"></i></div>
+            <div>
+              <h3><span class="counter" id="result-percentage-target" data-target="100">100</span>%</h3>
+              <p id="floating-passing-text-p">Passing Rate</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="about section-animate">
+      <div class="container about-container">
+        <div class="image-wrapper">
+          <div class="dots-pattern"></div>
+          <img src="assets/result.jpeg" alt="About Us">
+          <div class="experience-badge">
+            <h2>12+</h2>
+            <p>Years of<br>Excellence</p>
+          </div>
+        </div>
+        <div class="about-text">
+          <h2 class="section-title" id="render-about-title">Why Choose Us?</h2>
+          <p id="render-about-p1">We provide comprehensive education tailored for every age group.</p>
+          <p id="render-about-p2" style="margin-top:20px; color:var(--text-muted);"></p>
+          <ul class="features-list">
+            <li><i class="fas fa-check-circle"></i>
+              <div>
+                <h4>Expert Faculty</h4>
+                <p>Highly qualified teachers</p>
+              </div>
+            </li>
+            <li><i class="fas fa-check-circle"></i>
+              <div>
+                <h4>Modern Curriculum</h4>
+                <p>Result-oriented learning</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- COURSES SECTION -->
+    <section id="courses" class="courses section-animate">
+      <div class="container">
+        <div class="section-header-flex">
+          <div class="header-text">
+            <h2 class="section-title">Our Curriculum</h2>
+            <p class="section-subtitle" style="margin-bottom:0;">Discover our comprehensive programs for overall
+              development.</p>
+          </div>
+          <a href="#courses" class="btn btn-secondary view-all-btn">View All Courses <i
+              class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="carousel-wrapper" style="position:relative;">
+          <button class="carousel-arrow left hidden" id="courses-left"
+            onclick="scrollCarousel('dynamic-courses-wrapper', -1)"><i class="fas fa-chevron-left"></i></button>
+          <div class="carousel-container" id="dynamic-courses-wrapper">
+            <!-- Courses dynamically inserted here -->
+          </div>
+          <button class="carousel-arrow right" id="courses-right"
+            onclick="scrollCarousel('dynamic-courses-wrapper', 1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEACHERS SECTION -->
+    <section id="teachers" class="teachers section-animate">
+      <div class="container">
+        <div class="section-header-flex">
+          <div class="header-text">
+            <h2 class="section-title">Meet Our Experts</h2>
+            <p class="section-subtitle" style="margin-bottom:0;">Passionate educators dedicated to your success.</p>
+          </div>
+          <a href="#teachers" class="btn btn-secondary view-all-btn">See All Teachers <i
+              class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="carousel-wrapper" style="position:relative;">
+          <button class="carousel-arrow left hidden" id="teachers-left"
+            onclick="scrollCarousel('dynamic-teachers-grid', -1)"><i class="fas fa-chevron-left"></i></button>
+          <div class="carousel-container" id="dynamic-teachers-grid">
+            <!-- Teachers dynamically inserted here -->
+          </div>
+          <button class="carousel-arrow right" id="teachers-right"
+            onclick="scrollCarousel('dynamic-teachers-grid', 1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACHIEVERS (SCHOLARS) SECTION -->
+    <section id="achievers" class="courses section-animate" style="background:var(--bg-light);">
+      <div class="container">
+        <div class="center">
+          <h2 class="section-title">Our Scholars</h2>
+          <p class="section-subtitle">Outstanding achievements by our brilliant students over the years.</p>
+        </div>
+        <div id="dynamic-achievers-wrapper" style="margin-top:2rem;">
+          <!-- Achievers grouped by year injected here by script.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <section id="gallery" class="teachers section-animate" style="background:white;">
+      <div class="container">
+        <div class="center">
+          <h2 class="section-title">Campus Gallery</h2>
+          <p class="section-subtitle">Glimpses into our dynamic learning environment.</p>
+        </div>
+        <div class="carousel-wrapper" style="position:relative; margin-top:2rem;">
+          <button class="carousel-arrow left hidden" id="gallery-left"
+            onclick="scrollCarousel('dynamic-gallery-wrapper', -1)"><i class="fas fa-chevron-left"></i></button>
+          <div class="carousel-container" id="dynamic-gallery-wrapper">
+            <!-- Gallery Images injected dynamically -->
+          </div>
+          <button class="carousel-arrow right" id="gallery-right"
+            onclick="scrollCarousel('dynamic-gallery-wrapper', 1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS SECTION -->
+    <section id="reviews" class="courses section-animate" style="background:var(--bg-light);">
+      <div class="container">
+        <div class="center">
+          <h2 class="section-title">Student Reviews</h2>
+          <p class="section-subtitle">What our students and parents have to say about us.</p>
+        </div>
+        <div class="carousel-wrapper" style="position:relative; margin-top:2rem;">
+          <button class="carousel-arrow left hidden" id="reviews-left"
+            onclick="scrollCarousel('dynamic-reviews-grid', -1)"><i class="fas fa-chevron-left"></i></button>
+          <div class="carousel-container" id="dynamic-reviews-grid">
+            <!-- Reviews injected dynamically -->
+          </div>
+          <button class="carousel-arrow right" id="reviews-right" onclick="scrollCarousel('dynamic-reviews-grid', 1)"><i
+              class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCATION SECTION -->
+    <section id="location" class="location section-animate">
+      <div class="container">
+        <h2 class="section-title center">Location & Directions</h2>
+        <div class="location-container">
+          <div class="location-details">
+            <h3>Visit Our Center</h3>
+            <ul class="details-list">
+              <li>
+                <div class="icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+                <div>
+                  <strong>Address</strong>
+                  <p id="location-address-text">2nd floor, Msr Square complex, Queenstown Society, Udyog Nagar, outside,
+                    Chinchwad, Pimpri-Chinchwad, Maharashtra 411033</p>
+                </div>
+              </li>
+            </ul>
+            <a href="https://www.google.com/maps/dir//BrainyBox+phonics%2FAbacus%2FMaths+classes,+2nd+floor,+Msr+Square+complex,+Queenstown+Society,+Udyog+Nagar,+outside,+Chinchwad,+Pimpri-Chinchwad,+Maharashtra+411033/@18.6420999,73.7882016,18.25z/data=!4m8!4m7!1m0!1m5!1m1!1s0x3bc2b9c20c3921c1:0xf5ea920d74971f49!2m2!1d73.7891932!2d18.6407581?entry=ttu&g_ep=EgoyMDI2MDMxOC4xIKXMDSoASAFQAw%3D%3D"
+              target="_blank" class="btn btn-primary directions-btn">Get Directions <i
+                class="fas fa-external-link-alt"></i></a>
+          </div>
+          <div class="map-wrapper">
+            <iframe src="https://maps.google.com/maps?q=18.6407581,73.7891932&hl=en&z=17&output=embed" width="100%"
+              height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section id="faq" class="faq section-animate">
+      <div class="container">
+        <div class="center">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">Find answers to common questions about our institute.</p>
+        </div>
+        <div class="faq-container" id="dynamic-faq-container">
+          <!-- FAQs dynamically inserted here -->
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER / CONTACT SECTION -->
+    <footer id="contact" class="footer section-animate">
+      <div class="container">
+        <div class="footer-container">
+          <div class="footer-info">
+            <a href="#" class="footer-logo">
+              <img src="assets/logo.jpg" alt="Brainybox Logo"> Brainybox
+            </a>
+            <p>Trusted & reputed institute empowering the next generation. Join our journey to excellence!</p>
+            <div class="social-links">
+              <a href="https://instagram.com/mom_brainybox" target="_blank" class="social-icon"><i
+                  class="fab fa-instagram"></i>mom_brainybox</a>
+            </div>
+          </div>
+          <div class="footer-contact">
+            <h3>Contact Us</h3>
+            <ul>
+              <li><i class="fas fa-map-marker-alt"></i> 2nd floor, Msr Square complex, Queenstown Society, Udyog Nagar,
+                outside, Chinchwad, Pimpri-Chinchwad, Maharashtra 411033</li>
+              <li><i class="fas fa-phone-alt"></i> +91 8275200281</li>
+              <li><i class="fas fa-envelope"></i> mom.brainybox@gmail.com</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Brainybox Coaching Institute. All Rights Reserved. | <a href="privacy-policy.html"
+              style="color:var(--primary-light); text-decoration:none; font-weight:600;">Privacy Policy</a></p>
+          <p class="creators" style="margin-top:0.8rem; font-size:0.9rem; color:#94A3B8;">
+            Developed with <span style="color:var(--secondary);">♥</span> by
+            <a href="https://instagram.com/ahasas_singh" target="_blank"
+              style="color:var(--primary-light); text-decoration:none;">Ahasas Singh</a>,
+            <a href="https://instagram.com/aak_4216" target="_blank"
+              style="color:var(--primary-light); text-decoration:none;">Aakarsh Agarwal</a>, &
+            <a href="https://instagram.com/akul999x_x" target="_blank"
+              style="color:var(--primary-light); text-decoration:none;">Akul Agarwal</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Enrollment Modal Popup -->
+  <div class="modal-overlay" id="enroll-modal">
+    <div class="modal-content">
+      <button class="close-modal"><i class="fas fa-times"></i></button>
+      <h2 class="modal-title">Registration / Help</h2>
+      <p class="modal-subtitle">We would love to hear from you!</p>
+
+      <ul class="modal-contact-list">
+        <li>
+          <a href="#" id="enroll-popup-phone-link" class="mc-link">
+            <div class="mc-icon"><i class="fas fa-phone-alt"></i></div>
+            <div class="mc-text">
+              <strong>Call Us directly</strong>
+              <p id="enroll-popup-phone">Loading...</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" id="enroll-popup-email-link" class="mc-link">
+            <div class="mc-icon"><i class="fas fa-envelope"></i></div>
+            <div class="mc-text">
+              <strong>Send an Email</strong>
+              <p id="enroll-popup-email">Loading...</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" id="enroll-popup-address-link" target="_blank" class="mc-link">
+            <div class="mc-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="mc-text">
+              <strong>Visit our Center</strong>
+              <p id="enroll-popup-address">Loading...</p>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" id="enroll-popup-insta-link" target="_blank" class="mc-link">
+            <div class="mc-icon instagram"><i class="fab fa-instagram"></i></div>
+            <div class="mc-text">
+              <strong>Direct Message on Instagram</strong>
+              <p id="enroll-popup-insta">Loading...</p>
+            </div>
+          </a>
+        </li>
+      </ul>
+
+      <div style="margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
+        <p class="form-header-text">Or fill this quick form and we'll contact you</p>
+        <form id="student-enrollment-form" class="custom-enroll-form">
+          <div class="form-group">
+            <input type="text" id="enrollment-name" class="form-control" placeholder="Student's Name" required>
+          </div>
+          <div class="form-group">
+            <input type="tel" id="enrollment-phone" class="form-control" placeholder="Phone Number" required>
+          </div>
+          <div class="form-group">
+            <input type="email" id="enrollment-email" class="form-control" placeholder="Email Address" required>
+          </div>
+          <div id="enrollment-custom-fields" class="form-custom-fields"></div>
+          <button type="submit" class="btn btn-primary submit-btn">Submit Details</button>
+        </form>
+        <div id="enrollment-success-msg"
+          style="display:none; text-align:center; color:green; margin-top:15px; font-weight:bold;">
+          Thank you! We'll contact you shortly.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+  <!-- Optional: EmailJS integration -->
+  <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+      (function() { emailjs.init("YOUR_PUBLIC_KEY"); })();
+  </script> -->
+  <script src="dataManager.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

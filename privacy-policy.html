@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy | Brainybox</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Specific styles for policy page */
+    .policy-wrapper {
+      padding: 8rem 0 6rem;
+      min-height: 100vh;
+      background: var(--bg-light);
+    }
+
+    .policy-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem;
+      background: white;
+      border-radius: 24px;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03);
+    }
+
+    .policy-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid #E2E8F0;
+    }
+
+    .policy-header h1 {
+      font-size: 3.5rem;
+      color: var(--text-main);
+      margin-bottom: 1rem;
+      letter-spacing: -1px;
+    }
+
+    .policy-date {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: rgba(79, 70, 229, 0.1);
+      color: var(--primary);
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .policy-intro {
+      margin-top: 2rem;
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      text-align: center;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .policy-section {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--bg-light);
+      border-radius: 16px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .policy-section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+      background: white;
+      border: 1px solid rgba(79, 70, 229, 0.1);
+    }
+
+    .policy-section h2 {
+      font-size: 1.8rem;
+      color: var(--text-main);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .policy-section h2 i {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    }
+
+    .policy-section p,
+    .policy-section ul {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .policy-section ul {
+      padding-left: 1.5rem;
+      list-style-type: none;
+    }
+
+    .policy-section li {
+      margin-bottom: 0.8rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .policy-section li::before {
+      content: '•';
+      color: var(--primary);
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+      font-size: 1.5rem;
+      line-height: 1;
+      top: -2px;
+    }
+
+    .contact-card {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .contact-card a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 1rem 1.5rem;
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #E2E8F0;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+
+    .contact-card a:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateX(5px);
+      box-shadow: 0 5px 15px rgba(79, 70, 229, 0.1);
+    }
+
+    .contact-card i {
+      font-size: 1.3rem;
+      color: var(--accent);
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .policy-container {
+        padding: 2rem 1.5rem;
+      }
+
+      .policy-header h1 {
+        font-size: 2.5rem;
+      }
+
+      .policy-section {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav id="navbar" class="scrolled"
+    style="background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="assets/logo.jpg" alt="Brainybox Logo"> Brainybox
+      </a>
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <a href="index.html" class="btn btn-secondary" style="font-size: 0.95rem; padding: 0.6rem 1.2rem;"><i
+            class="fas fa-arrow-left"></i> Back to Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="policy-wrapper">
+    <div class="container">
+      <div class="policy-container section-animate">
+
+        <div class="policy-header">
+          <h1>Privacy Policy</h1>
+          <div class="policy-date">Effective Date: March 22, 2026</div>
+          <p class="policy-intro">At BrainyBox, we value your privacy and are committed to protecting your personal
+            information. This Privacy Policy explains how we collect, use, and safeguard your data when you visit our
+            website or interact with us.</p>
+        </div>
+
+        <div class="policy-section">
+          <h2><i class="fas fa-clipboard-list"></i> 1. Information We Collect</h2>
+          <p>We may collect the following information when you use our website or enroll:</p>
+          <ul>
+            <li>Name</li>
+            <li>Phone Number</li>
+            <li>Email Address</li>
+            <li>Any details submitted through forms (e.g., enrollment inquiries)</li>
+          </ul>
+        </div>
+
+        <div class="policy-section">
+          <h2><i class="fas fa-user-shield"></i> 2. How We Use Your Information</h2>
+          <p>We use your information to:</p>
+          <ul>
+            <li>Respond to your inquiries</li>
+            <li>Process enrollment requests</li>
+            <li>Provide information about courses and programs</li>
+            <li>Improve our services and website experience</li>
+          </ul>
+          <p
+            style="margin-top: 1.5rem; font-weight: 600; color: var(--text-main); background: rgba(236, 72, 153, 0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--secondary);">
+            <i class="fas fa-lock" style="color: var(--secondary);"></i> We do not sell or rent your personal data to
+            third parties.
+          </p>
+        </div>
+
+        <div class="policy-section">
+          <h2><i class="fas fa-shield-alt"></i> 3. Data Protection</h2>
+          <p>We take appropriate measures to protect your personal information from unauthorized access, misuse, or
+            disclosure. However, no online system is 100% secure.</p>
+        </div>
+
+        <div class="policy-section">
+          <h2><i class="fas fa-external-link-alt"></i> 4. Third-Party Links</h2>
+          <p>Our website may include links to third-party platforms such as Instagram. We are not responsible for the
+            privacy practices of those external websites.</p>
+        </div>
+
+        <div class="policy-section">
+          <h2><i class="fas fa-child"></i> 5. Children's Privacy</h2>
+          <p>Our services are intended for students, but personal data should be provided by parents or guardians where
+            applicable.</p>
+        </div>
+
+        <div class="policy-section">
+          <h2><i class="fas fa-sync-alt"></i> 6. Updates to This Policy</h2>
+          <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated
+            effective date.</p>
+        </div>
+
+        <div class="policy-section" style="border: 2px solid var(--primary-light); background: white;">
+          <h2><i class="fas fa-headset"></i> 7. Contact Us</h2>
+          <p>If you have any questions regarding this Privacy Policy, you can contact us:</p>
+          <div class="contact-card">
+            <a href="tel:8275200281"><i class="fas fa-phone-alt"></i> 8275200281</a>
+            <a href="mailto:mom.brainybox@gmail.com"><i class="fas fa-envelope"></i> mom.brainybox@gmail.com</a>
+            <a href="https://instagram.com/mom_brainybox" target="_blank"><i class="fab fa-instagram"
+                style="color:#E1306C;"></i> @mom_brainybox</a>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 4rem;">
+          <a href="index.html" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.2rem;"><i
+              class="fas fa-home"></i> Back to Homepage</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <p>&copy; 2024 Brainybox Coaching Institute. All Rights Reserved. | <a href="privacy-policy.html"
+            style="color:var(--primary-light); text-decoration:none; font-weight:600;">Privacy Policy</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script>
+    // Simple entrance animations for smooth UX
+    document.addEventListener("DOMContentLoaded", () => {
+      gsap.from(".policy-header", { y: -30, opacity: 0, duration: 1, ease: "power3.out" });
+      gsap.from(".policy-section", {
+        y: 50, opacity: 0, duration: 0.8, stagger: 0.15, ease: "power3.out", delay: 0.2
+      });
+    });
+  </script>
+</body>
+
+</html>

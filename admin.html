@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainyBox Admin Dashboard</title>
+    <link rel="icon" type="image/png" href="/brainybox-logo.png" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK (Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="admin.css">
+    <!-- Cropper CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast hidden">
+        <i class="fas fa-check-circle"></i>
+        <span id="toast-message">Success!</span>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="active">
+        <div class="login-card glass-card">
+            <div class="login-header">
+                <img src="assets/logo.jpg" alt="BrainyBox Logo" class="logo">
+                <h2>Admin Login</h2>
+                <p>Enter credentials to access dashboard</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group flex-between" style="margin-top:1rem; margin-bottom:1.5rem; justify-content:center;">
+                    <label style="display:flex; align-items:center; gap:0.5rem; font-weight:normal; font-size:1rem; cursor:pointer; color:var(--text-muted);">
+                        <input type="checkbox" id="remember-me"> Remember me
+                    </label>
+                </div>
+                <div id="login-error" class="error-msg"></div>
+                <button type="button" class="btn btn-outline" id="google-login-btn" style="width:100%; border-color:#DB4437; color:#DB4437; display:flex; align-items:center; justify-content:center; gap:10px; padding:12px; font-size:1rem;">
+                    <i class="fab fa-google"></i> Sign in with Google
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="dashboard" class="hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-card" style="overflow-y:auto; overflow-x:hidden; height:100vh;">
+            <div class="sidebar-header">
+                <img src="assets/logo.jpg" alt="Logo" class="sidebar-logo">
+                <h3>BrainyBox</h3>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-target="panel-home"><i class="fas fa-home"></i> Dashboard</li>
+                <li class="nav-item" data-target="panel-uicontrols"><i class="fas fa-sliders-h"></i> UI Settings</li>
+                <li class="nav-item" data-target="panel-content"><i class="fas fa-file-alt"></i> Page Content</li>
+                <li class="nav-item" data-target="panel-gallery"><i class="fas fa-images"></i> Image Gallery</li>
+                <li class="nav-item" data-target="panel-achievers"><i class="fas fa-trophy"></i> Top Achievers</li>
+                <li class="nav-item" data-target="panel-reviews"><i class="fas fa-star"></i> Reviews System</li>
+                <li class="nav-item" data-target="panel-contact"><i class="fas fa-address-card"></i> Contact Manager</li>
+                <li class="nav-item" data-target="panel-teachers"><i class="fas fa-chalkboard-teacher"></i> Teachers</li>
+                <li class="nav-item" data-target="panel-programs"><i class="fas fa-book-open"></i> Programs</li>
+                <li class="nav-item" data-target="panel-faqs"><i class="fas fa-question-circle"></i> FAQs</li>
+                <li class="nav-item" data-target="panel-enrollments"><i class="fas fa-address-book"></i> Enrollments</li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" style="height: 100vh; overflow-y: auto; padding-bottom: 5rem;">
+            <header class="topbar">
+                <div class="mobile-toggle"><i class="fas fa-bars"></i></div>
+                <h2>Admin Dashboard</h2>
+                <div class="user-info">
+                    <button class="btn btn-primary btn-sm" id="btn-publish-live" style="margin-right: 8px; min-width: 140px; text-align: center;"><i class="fas fa-satellite-dish"></i> Publish Live</button>
+                    <a href="index.html?preview=true" target="_blank" class="btn btn-primary btn-sm" style="margin-right: 8px; min-width: 140px; text-align: center;"><i class="fas fa-eye"></i> Preview Draft</a>
+                    <a href="index.html" target="_blank" class="btn btn-primary btn-sm" style="margin-right: 15px; min-width: 140px; text-align: center;"><i class="fas fa-external-link-alt"></i> Open Website</a>
+                    
+                    <div style="position:relative; margin-right: 15px; cursor:pointer;" id="notification-bell">
+                        <i class="fas fa-bell" style="font-size:1.2rem; color:var(--text-muted); margin-top:5px;"></i>
+                        <span id="notification-badge" style="position:absolute; top:-5px; right:-8px; background:var(--danger); color:white; font-size:0.7rem; font-weight:bold; padding:2px 5px; border-radius:10px; display:none;">0</span>
+                    </div>
+                    
+                    <span>Admin</span>
+                    <div class="avatar"><i class="fas fa-user-shield"></i></div>
+                </div>
+            </header>
+
+            <div class="panels">
+                <!-- Home Panel -->
+                <div id="panel-home" class="panel active">
+                    <div class="panel-header">
+                        <h3>General Statistics</h3>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card glass-card">
+                            <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+                            <div class="stat-details">
+                                <p>Students Enrolled</p>
+                                <h3 id="stat-students">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card glass-card mt-20" style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                        <div>
+                            <h4>Edit Students Enrolled</h4>
+                            <form id="students-form" style="display:flex; flex-direction:column; gap:10px;">
+                                <input type="number" id="students-count-input" required>
+                                <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Update Counter</button>
+                            </form>
+                            <p class="help-text" style="margin-top:10px;">Instantly updates the Students Enrolled counter.</p>
+                        </div>
+                        <div>
+                            <h4>Edit Passing Rate (Floating Icon)</h4>
+                            <form id="floating-icon-form" style="display:flex; flex-direction:column; gap:10px;">
+                                <input type="text" id="db-result-percentage" placeholder="Overall % (e.g. 100)">
+                                <input type="text" id="db-floating-text" placeholder="Pass Rate Text (e.g. Passing Rate)">
+                                <label style="font-size:0.85rem; color:var(--text-muted); margin-bottom:-5px;">Upload Custom Image (Optional)</label>
+                                <input type="file" id="db-floating-image-file" accept="image/*">
+                                <input type="hidden" id="db-floating-image-base64">
+                                <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Update Floating Icon</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teachers Panel -->
+                <div id="panel-teachers" class="panel hidden">
+                    <div class="panel-header flex-between">
+                        <h3>Manage Teachers</h3>
+                        <button class="btn btn-primary" onclick="window.openModal('teacher-modal')"><i class="fas fa-plus"></i> Add Teacher</button>
+                    </div>
+                    <div class="data-table-container glass-card">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Subject</th>
+                                    <th>Experience</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teachers-tbody">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Programs Panel -->
+                <div id="panel-programs" class="panel hidden">
+                    <div class="panel-header flex-between">
+                        <h3>Manage Programs</h3>
+                        <button class="btn btn-primary" onclick="window.openModal('program-modal')"><i class="fas fa-plus"></i> Add Program</button>
+                    </div>
+                    <div class="data-table-container glass-card">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Icon</th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="programs-tbody">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- UI Controls Panel -->
+                <div id="panel-uicontrols" class="panel hidden">
+                    <div class="panel-header">
+                        <h3>UI & Layout Settings</h3>
+                    </div>
+                    <div class="content-card glass-card">
+                        <form id="ui-settings-form">
+                            <h4>Section Visibility</h4>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:1.5rem;">
+                                <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-hero"><label>Hero Area</label></div>
+                                <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-about"><label>About</label></div>
+                                <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-scholars"><label>Scholars</label></div>
+                                <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-teachers"><label>Teachers</label></div>
+                                <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-courses"><label>Courses</label></div>
+                                <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-reviews"><label>Reviews</label></div>
+                                <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-achievers"><label>Achievers</label></div>
+                                <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-faq"><label>FAQ</label></div>
+                            </div>
+                            <hr style="margin:1.5rem 0; opacity:0.1">
+                            <h4>Teachers Carousel View All Button</h4>
+                            <div class="form-group checkbox-group"><input type="checkbox" id="ui-t-btn"><label>Enable "See All" Button</label></div>
+                            <input type="text" id="ui-t-text" placeholder="Button Text" style="margin-bottom:1.5rem;">
+                            
+                            <h4>Courses Carousel View All Button</h4>
+                            <div class="form-group checkbox-group"><input type="checkbox" id="ui-c-btn"><label>Enable "See All" Button</label></div>
+                            <input type="text" id="ui-c-text" placeholder="Button Text" style="margin-bottom:1.5rem;">
+
+                            <button type="submit" class="btn btn-primary mt-20">Save UI Settings</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Page Content Panel -->
+                <div id="panel-content" class="panel hidden">
+                    <div class="panel-header">
+                        <h3>Edit Page Content</h3>
+                    </div>
+                    <div class="content-card glass-card">
+                        <form id="content-form">
+                            <h4>Hero Section</h4>
+                            <div class="form-group"><label>Badge Text</label><input type="text" id="content-hero-badge"></div>
+                            <div class="form-group"><label>Title (HTML allowed)</label><input type="text" id="content-hero-title"></div>
+                            <div class="form-group"><label>Subtitle</label><textarea id="content-hero-subtitle" rows="2"></textarea></div>
+                            <hr style="margin:1.5rem 0; opacity:0.1">
+                            <h4>About Section</h4>
+                            <div class="form-group"><label>Title</label><input type="text" id="content-about-title"></div>
+                            <div class="form-group"><label>Paragraph 1</label><textarea id="content-about-p1" rows="3"></textarea></div>
+                            <div class="form-group"><label>Paragraph 2</label><textarea id="content-about-p2" rows="3"></textarea></div>
+                            
+                            <hr style="margin:1.5rem 0; opacity:0.1">
+                            <button type="submit" class="btn btn-primary mt-20">Save Content</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Contact Manager Panel -->
+                <div id="panel-contact" class="panel hidden">
+                    <div class="panel-header">
+                        <h3>Contact Manager</h3>
+                    </div>
+                    <div class="content-card glass-card">
+                        <form id="contact-form">
+                            <h4>Contact & Location</h4>
+                            <div class="form-group"><label>Phone Number</label><input type="text" id="content-phone"></div>
+                            <div class="form-group"><label>Email Address</label><input type="email" id="content-email"></div>
+                            <div class="form-group"><label>Full Address</label><textarea id="content-address" rows="2"></textarea></div>
+                            <div class="form-group"><label>Instagram Username (e.g. @brainybox)</label><input type="text" id="content-instagram"></div>
+                            <div class="form-group"><label>Google Maps Link</label><input type="url" id="content-location-link"></div>
+                            
+                            <button type="submit" class="btn btn-primary mt-20">Save Contact Info</button>
+                        </form>
+                    </div>
+                </div>
+
+
+                <!-- Image Gallery Panel -->
+                <div id="panel-gallery" class="panel hidden">
+                    <div class="panel-header flex-between">
+                        <h3>Image Gallery</h3>
+                        <button class="btn btn-primary" onclick="window.openModal('gallery-modal')"><i class="fas fa-plus"></i> Add Image</button>
+                    </div>
+                    <div class="data-table-container glass-card">
+                        <div id="gallery-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:15px;">
+                            <!-- Dynamic images injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievers Panel -->
+                <div id="panel-achievers" class="panel hidden">
+                    <div class="panel-header flex-between">
+                        <h3>Top Achievers</h3>
+                        <button class="btn btn-primary" onclick="window.openModal('achiever-modal')"><i class="fas fa-plus"></i> Add Achievers</button>
+                    </div>
+                    <div class="data-table-container glass-card">
+                        <div id="achievers-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:15px;">
+                            <!-- Dynamic images injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reviews Panel -->
+                <div id="panel-reviews" class="panel hidden">
+                    <div class="panel-header flex-between">
+                        <h3>Reviews System</h3>
+                        <button class="btn btn-primary" onclick="window.openModal('review-modal')"><i class="fas fa-plus"></i> Add Review</button>
+                    </div>
+                    <div class="data-table-container glass-card">
+                        <table class="data-table">
+                            <thead><tr><th>Reviewer</th><th>Rating</th><th>Media (URL/Video)</th><th>Actions</th></tr></thead>
+                            <tbody id="reviews-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <!-- Enrollments Panel -->
+                <div id="panel-enrollments" class="panel hidden">
+                    <div class="panel-header flex-between">
+                        <h3>Enrollment Manager</h3>
+                        <button class="btn btn-outline" id="btn-export-csv"><i class="fas fa-download"></i> Export CSV</button>
+                    </div>
+                    
+                    <div style="display:grid; grid-template-columns: 1fr 2fr; gap:20px; align-items:start;">
+                        
+                        <!-- Settings Form -->
+                        <div class="content-card glass-card">
+                            <h4>Button & Form Settings</h4>
+                            <form id="enroll-settings-form" style="margin-top:1rem;">
+                                <div class="form-group">
+                                    <label>Button Text (e.g. Enroll Now)</label>
+                                    <input type="text" id="enroll-btn-text" required>
+                                </div>
+                                <input type="hidden" id="enroll-change-action" value="modal">
+                                <input type="hidden" id="enroll-redirect-url" value="">
+                                
+                                <hr style="margin:1.5rem 0; opacity:0.1">
+                                
+                                <div id="enroll-fields-builder">
+                                    <h4>Form Fields Builder</h4>
+                                    <p style="font-size:0.85rem; margin-bottom:10px; color:var(--text-muted);">Name, Phone, and Email are included by default.</p>
+                                    <div id="custom-fields-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+                                    <button type="button" class="btn btn-sm btn-secondary mt-10" id="btn-add-custom-field"><i class="fas fa-plus"></i> Add Custom Field</button>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary mt-20" style="width:100%">Save Settings</button>
+                            </form>
+                        </div>
+
+                        <!-- Submissions Table -->
+                        <div class="data-table-container glass-card">
+                            <h4>Student Leads</h4>
+                            <table class="data-table" style="margin-top:10px;">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Name / Contact</th>
+                                        <th>Custom Fields</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="enrollments-tbody">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQs Panel -->
+                <div id="panel-faqs" class="panel hidden">
+                    <div class="panel-header flex-between">
+                        <h3>Manage FAQs</h3>
+                        <button class="btn btn-primary" onclick="window.openModal('faq-modal')"><i class="fas fa-plus"></i> Add FAQ</button>
+                    </div>
+                    <div class="data-table-container glass-card">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="faqs-tbody">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    
+    <!-- Teacher Modal -->
+    <div id="teacher-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="teacher-modal-title">Add Teacher</h3>
+                <button class="close-modal" onclick="window.closeModal('teacher-modal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="teacher-form">
+                <input type="hidden" id="teacher-id">
+                <div class="form-group">
+                    <label>Teacher Image</label>
+                    <input type="file" id="teacher-image-file" accept="image/*">
+                    <input type="hidden" id="teacher-image-base64">
+                    <div id="teacher-image-preview" class="image-preview"></div>
+                </div>
+                <div class="form-group group-row">
+                    <div class="col">
+                        <label>Name</label>
+                        <input type="text" id="teacher-name" required>
+                    </div>
+                    <div class="col">
+                        <label>Subject</label>
+                        <input type="text" id="teacher-subject" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Experience (e.g., 6+ years)</label>
+                    <input type="text" id="teacher-experience" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="teacher-description" required rows="3"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="window.closeModal('teacher-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Teacher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Program Modal -->
+    <div id="program-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="program-modal-title">Add Program</h3>
+                <button class="close-modal" onclick="window.closeModal('program-modal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="program-form">
+                <input type="hidden" id="program-id">
+                <div class="form-group group-row">
+                    <div class="col">
+                        <label>Program Name</label>
+                        <input type="text" id="program-name" required>
+                    </div>
+                    <div class="col">
+                        <label>Icon Class (e.g. fas fa-book)</label>
+                        <input type="text" id="program-icon" required>
+                    </div>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="program-ismain">
+                    <label for="program-ismain">Is Main Course (Detailed Card)</label>
+                </div>
+                
+                <div id="main-course-fields" class="hidden">
+                    <div class="form-group group-row">
+                        <div class="col">
+                            <label>Level (e.g. Class 1 to 10)</label>
+                            <input type="text" id="program-level">
+                        </div>
+                        <div class="col">
+                            <label>Curriculum (e.g. CBSE)</label>
+                            <input type="text" id="program-curriculum">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Tags (Comma separated)</label>
+                        <input type="text" id="program-tags">
+                        <p class="help-text">e.g. English, Science, Mathematics</p>
+                    </div>
+                </div>
+                
+                <div id="special-course-fields">
+                    <div class="form-group">
+                        <label>Short Description (For simple cards)</label>
+                        <textarea id="program-description" rows="2"></textarea>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="window.closeModal('program-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Program</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FAQ Modal -->
+    <div id="faq-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="faq-modal-title">Add FAQ</h3>
+                <button class="close-modal" onclick="window.closeModal('faq-modal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="faq-form">
+                <input type="hidden" id="faq-id">
+                <div class="form-group">
+                    <label>Question</label>
+                    <input type="text" id="faq-question" required>
+                </div>
+                <div class="form-group">
+                    <label>Answer</label>
+                    <textarea id="faq-answer" required rows="4"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="window.closeModal('faq-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save FAQ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Gallery Image Modal -->
+    <div id="gallery-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card" style="max-width: 500px">
+            <div class="modal-header">
+                <h3 id="gallery-modal-title">Add Gallery Image</h3>
+                <button type="button" class="close-modal" onclick="window.closeModal('gallery-modal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="gallery-form">
+                <input type="hidden" id="gallery-id">
+                <div class="form-group">
+                    <label>Caption / Alt Text</label>
+                    <input type="text" id="gallery-caption" placeholder="Short description of image">
+                </div>
+                <div class="form-group">
+                    <label>Upload Image</label>
+                    <input type="file" id="gallery-photo-file" accept="image/*">
+                    <input type="hidden" id="gallery-photo-base64">
+                    <div id="gallery-photo-preview" class="image-preview" style="margin-top: 10px;"></div>
+                </div>
+                <div class="form-group">
+                    <label>OR Image URL</label>
+                    <input type="url" id="gallery-photo-url" placeholder="https://...">
+                </div>
+                <div class="modal-footer" style="margin-top:20px;">
+                    <button type="button" class="btn btn-secondary" onclick="window.closeModal('gallery-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Image</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Achiever Modal -->
+    <div id="achiever-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card" style="max-width: 500px">
+            <div class="modal-header">
+                <h3 id="achiever-modal-title">Add Achievers</h3>
+                <button type="button" class="close-modal" onclick="window.closeModal('achiever-modal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="achiever-form">
+                <div class="form-group">
+                    <label>Year (e.g. 2025)</label>
+                    <input type="text" id="achiever-year" required placeholder="2025">
+                </div>
+                <div class="form-group">
+                    <label>Upload Images (Multiple Allowed)</label>
+                    <input type="file" id="achiever-photo-files" accept="image/*" multiple required>
+                    <div id="achiever-photos-preview" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;"></div>
+                </div>
+                <div class="modal-footer" style="margin-top:20px;">
+                    <button type="button" class="btn btn-secondary" onclick="window.closeModal('achiever-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Achievers</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script src="dataManager.js"></script>
+    <!-- Review Modal -->
+    <div id="review-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card" style="max-width: 500px">
+            <div class="modal-header">
+                <h3 id="review-modal-title">Add Review</h3>
+                <button type="button" class="close-modal" onclick="window.closeModal('review-modal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="review-form">
+                <input type="hidden" id="review-id">
+                <div class="form-group">
+                    <label>Reviewer Name</label>
+                    <input type="text" id="review-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Rating (1-5 Stars)</label>
+                    <input type="number" id="review-rating" min="1" max="5" value="5" required>
+                </div>
+                <div class="form-group">
+                    <label>Review Text</label>
+                    <textarea id="review-text" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Profile Image (Optional)</label>
+                    <input type="file" id="review-image-file" accept="image/*">
+                    <input type="hidden" id="review-image-base64">
+                    <div id="review-image-preview" class="image-preview" style="margin-top: 10px;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="window.closeModal('review-modal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

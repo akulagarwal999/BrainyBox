@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Courses - BrainyBox</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation (Simplified) -->
+    <nav id="navbar" class="scrolled">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/logo.jpg" alt="BrainyBox Logo">
+                <span>BrainyBox</span>
+            </a>
+            <div class="nav-actions">
+                <a href="index.html" class="btn btn-secondary btn-sm"><i class="fas fa-home"></i> Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="grid-layout-page">
+        <div class="container">
+            <div class="page-header">
+                <a href="index.html#courses" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Homepage</a>
+                <h1>Our Complete Programs</h1>
+            </div>
+            
+            <div id="full-courses-grid" class="full-grid">
+                <!-- Data injected via JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-bottom" style="border-top: none; padding-top: 2rem;">
+          <p>&copy; 2024 Brainybox Coaching Institute. All Rights Reserved. | <a href="privacy-policy.html" style="color:var(--primary-light); text-decoration:none; font-weight:600;">Privacy Policy</a></p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Data Manager -->
+    <script src="dataManager.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if(typeof DataManager === 'undefined') return;
+            const data = DataManager.getData();
+            if(!data) return;
+
+            const grid = document.getElementById('full-courses-grid');
+            if(grid) {
+                grid.innerHTML = data.programs.map(p => {
+                    if (p.isMain) {
+                        return `
+                            <div class="main-courses glass-card" style="height: 100%; display: flex; flex-direction: column;">
+                                <div class="course-header">
+                                    <i class="${p.icon}"></i>
+                                    <h3>${p.name}</h3>
+                                </div>
+                                <p class="level">${p.level || ''}</p>
+                                <p class="curriculum">${p.curriculum || ''}</p>
+                                <div class="subjects-tags">
+                                    ${(p.tags || []).map(tag => `<span>${tag}</span>`).join('')}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        return `
+                            <div class="course-card glass-card" style="height: 100%; display: flex; flex-direction: column;">
+                                <i class="${p.icon}"></i>
+                                <h4>${p.name}</h4>
+                                <p>${p.description || ''}</p>
+                            </div>
+                        `;
+                    }
+                }).join('');
+            }
+        });
+    </script>
+</body>
+</html>
