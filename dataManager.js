@@ -116,7 +116,7 @@ const defaultData = {
         contact_facebook: "@BrainyBoxOfficial",
         location_link: "https://www.google.com/maps",
         result_percentage: "100",
-        floating_icon_image: "assets/2025-2026.jpeg",
+        floating_icon_image: "assets/logo.jpg",
         floating_icon_text: "Passing Rate"
     }
 };
