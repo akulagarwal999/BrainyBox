@@ -66,7 +66,6 @@
                 <li class="nav-item" data-target="panel-uicontrols"><i class="fas fa-sliders-h"></i> UI Settings</li>
                 <li class="nav-item" data-target="panel-content"><i class="fas fa-file-alt"></i> Page Content</li>
                 <li class="nav-item" data-target="panel-gallery"><i class="fas fa-images"></i> Image Gallery</li>
-                <li class="nav-item" data-target="panel-achievers"><i class="fas fa-trophy"></i> Top Achievers</li>
                 <li class="nav-item" data-target="panel-reviews"><i class="fas fa-star"></i> Reviews System</li>
                 <li class="nav-item" data-target="panel-contact"><i class="fas fa-address-card"></i> Contact Manager</li>
                 <li class="nav-item" data-target="panel-teachers"><i class="fas fa-chalkboard-teacher"></i> Teachers</li>
@@ -200,7 +199,6 @@
                                 <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-teachers"><label>Teachers</label></div>
                                 <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-courses"><label>Courses</label></div>
                                 <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-reviews"><label>Reviews</label></div>
-                                <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-achievers"><label>Achievers</label></div>
                                 <div class="form-group checkbox-group" style="margin:0;"><input type="checkbox" id="ui-faq"><label>FAQ</label></div>
                             </div>
                             <hr style="margin:1.5rem 0; opacity:0.1">
@@ -268,19 +266,6 @@
                     </div>
                     <div class="data-table-container glass-card">
                         <div id="gallery-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:15px;">
-                            <!-- Dynamic images injected here -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Achievers Panel -->
-                <div id="panel-achievers" class="panel hidden">
-                    <div class="panel-header flex-between">
-                        <h3>Top Achievers</h3>
-                        <button class="btn btn-primary" onclick="window.openModal('achiever-modal')"><i class="fas fa-plus"></i> Add Achievers</button>
-                    </div>
-                    <div class="data-table-container glass-card">
-                        <div id="achievers-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:15px;">
                             <!-- Dynamic images injected here -->
                         </div>
                     </div>
@@ -530,31 +515,6 @@
                 <div class="modal-footer" style="margin-top:20px;">
                     <button type="button" class="btn btn-secondary" onclick="window.closeModal('gallery-modal')">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Image</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Achiever Modal -->
-    <div id="achiever-modal" class="modal-overlay hidden">
-        <div class="modal-content glass-card" style="max-width: 500px">
-            <div class="modal-header">
-                <h3 id="achiever-modal-title">Add Achievers</h3>
-                <button type="button" class="close-modal" onclick="window.closeModal('achiever-modal')"><i class="fas fa-times"></i></button>
-            </div>
-            <form id="achiever-form">
-                <div class="form-group">
-                    <label>Year (e.g. 2025)</label>
-                    <input type="text" id="achiever-year" required placeholder="2025">
-                </div>
-                <div class="form-group">
-                    <label>Upload Images (Multiple Allowed)</label>
-                    <input type="file" id="achiever-photo-files" accept="image/*" multiple required>
-                    <div id="achiever-photos-preview" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;"></div>
-                </div>
-                <div class="modal-footer" style="margin-top:20px;">
-                    <button type="button" class="btn btn-secondary" onclick="window.closeModal('achiever-modal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Achievers</button>
                 </div>
             </form>
         </div>

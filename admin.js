@@ -175,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if(typeof renderFaqs !== 'undefined') renderFaqs(data.faqs || []);
         
         if(typeof renderReviews !== 'undefined') renderReviews(data.reviews || []);
-        if(typeof renderAchievers !== 'undefined') renderAchievers(data.achievers || []);
         if(typeof renderGallery !== 'undefined') renderGallery(data.gallery_images || []);
         if(typeof populateUISettings !== 'undefined') populateUISettings(data.ui_settings || {});
         if(typeof populateContent !== 'undefined') populateContent(data.content || {});
@@ -256,8 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    const MAX_WIDTH = 1500;
-                    const MAX_HEIGHT = 1500;
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 800;
                     let width = img.width;
                     let height = img.height;
                     
@@ -277,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
                     previewEl.innerHTML = `<img src="${dataUrl}" alt="Preview">`;
                     base64El.value = dataUrl;
                 };
@@ -931,74 +930,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==== Achievers Manager ====
-    function renderAchievers(achievers) {
-        const grid = document.getElementById('achievers-grid');
-        if(!grid) return;
-        grid.innerHTML = '';
-        achievers.sort((a,b) => (b.year || '').localeCompare(a.year || '')).forEach(a => {
-            const div = document.createElement('div');
-            div.className = 'glass-card';
-            div.style.padding = '10px';
-            div.style.position = 'relative';
-            div.innerHTML = `
-                <div style="position:absolute; top:10px; left:10px; background:var(--primary); color:#fff; padding:2px 6px; border-radius:4px; font-size:0.8rem; font-weight:bold; z-index:2;">${a.year || 'N/A'}</div>
-                <img src="${a.image}" alt="Achiever" style="width:100%; height:120px; object-fit:cover; border-radius:4px; margin-bottom:10px;">
-                <button class="btn btn-sm btn-danger btn-delete-achiever" data-id="${a.id}" style="width:100%;"><i class="fas fa-trash"></i> Delete</button>
-            `;
-            grid.appendChild(div);
-        });
-        document.querySelectorAll('.btn-delete-achiever').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = e.currentTarget.getAttribute('data-id');
-                if(confirm('Delete this achiever image?')) {
-                    DataManager.deleteAchiever(id);
-                    showToast('Achiever deleted');
-                    refreshDashboardData();
-                }
-            });
-        });
-    }
-
-    let achieverBase64Files = [];
-    const achieverFilesInput = document.getElementById('achiever-photo-files');
-    if(achieverFilesInput) {
-        achieverFilesInput.addEventListener('change', function() {
-            achieverBase64Files = [];
-            const preview = document.getElementById('achiever-photos-preview');
-            preview.innerHTML = '';
-            
-            if(this.files && this.files.length > 0) {
-                Array.from(this.files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        achieverBase64Files.push(e.target.result);
-                        preview.innerHTML += `<img src="${e.target.result}" style="height:50px; object-fit:cover; border-radius:4px;">`;
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-        });
-    }
-
-    const achieverForm = document.getElementById('achiever-form');
-    if(achieverForm) {
-        achieverForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const yearStr = document.getElementById('achiever-year').value;
-            if(achieverBase64Files.length === 0) return alert('Select at least one image');
-            
-            achieverBase64Files.forEach(base64 => {
-                DataManager.addAchiever({ year: yearStr, image: base64 });
-            });
-            showToast(achieverBase64Files.length + ' Achievers added successfully');
-            achieverForm.reset();
-            achieverBase64Files = [];
-            document.getElementById('achiever-photos-preview').innerHTML = '';
-            window.closeModal('achiever-modal');
-            refreshDashboardData();
-        });
-    }
+    // ==== Achievers Manager removed ====
 
     // ==== Image Gallery Manager ====
     function renderGallery(images) {
